@@ -31,10 +31,10 @@ static vector<Uint8> _macroBreakCode = {
 	KEY_RETURN, KEY_COMMA, KEY_DOT, KEY_SLASH, KEY_SEMICOLON, KEY_QUOTE, KEY_BACK_SLASH, KEY_MINUS, KEY_EQUALS
 };
 
-static Uint16 ProcessingChar[][11] = {
-	{KEY_S, KEY_F, KEY_R, KEY_X, KEY_J, KEY_A, KEY_O, KEY_E, KEY_W, KEY_D, KEY_Z}, //Telex
-	{KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0}, //VNI
-	{KEY_S, KEY_F, KEY_R, KEY_X, KEY_J, KEY_A, KEY_O, KEY_E, KEY_W, KEY_D, KEY_Z} //Simple Telex
+static Uint16 ProcessingChar[][13] = {
+	{KEY_S, KEY_F, KEY_R, KEY_X, KEY_J, KEY_A, KEY_O, KEY_E, KEY_W, KEY_D, KEY_Z, KEY_U, KEY_B}, //Telex
+	{KEY_1, KEY_2, KEY_3, KEY_4, KEY_5, KEY_6, KEY_6, KEY_7, KEY_8, KEY_9, KEY_0, KEY_U, KEY_B}, //VNI
+	{KEY_S, KEY_F, KEY_R, KEY_X, KEY_J, KEY_A, KEY_O, KEY_E, KEY_W, KEY_D, KEY_Z, KEY_U, KEY_B} //Simple Telex
 };
 
 #define IS_KEY_Z(key) (ProcessingChar[vInputType][10] == key)
@@ -43,6 +43,11 @@ static Uint16 ProcessingChar[][11] = {
                                     (vInputType == vVNI ? (ProcessingChar[vInputType][8] == key || ProcessingChar[vInputType][7] == key) : false))
 #define IS_KEY_DOUBLE(key) ((vInputType == vTelex || vInputType == vSimpleTelex) ? (ProcessingChar[vInputType][5] == key || ProcessingChar[vInputType][6] == key || ProcessingChar[vInputType][7] == key) :\
                                         (vInputType == vVNI ? ProcessingChar[vInputType][6] == key : false))
+
+#define IS_KEY_DOUBLE_GERMANY(key) ((vInputType == vTelex || vInputType == vSimpleTelex) ? (ProcessingChar[vInputType][5] == key || \
+									 ProcessingChar[vInputType][6] == key || ProcessingChar[vInputType][7] == key) || ProcessingChar[vInputType][11] == key || ProcessingChar[vInputType][12] == key :\
+                                     (vInputType == vVNI ? ProcessingChar[vInputType][6] == key : false))
+
 #define IS_KEY_S(key) (ProcessingChar[vInputType][0] == key)
 #define IS_KEY_F(key) (ProcessingChar[vInputType][1] == key)
 #define IS_KEY_R(key) (ProcessingChar[vInputType][2] == key)
@@ -595,9 +600,12 @@ Uint32 getCharacterCode(const Uint32& data) {
 	return 0;
 }
 
+
+//tinh so nguyen am	
 void findAndCalculateVowel(const bool& forGrammar) {
 	vowelCount = 0;
 	VSI = VEI = 0;
+	//MessageBoxA(NULL, std::to_string(_index).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);
 	for (iii = _index - 1; iii >= 0; iii--) {
 		if (IS_CONSONANT(CHR(iii))) {
 			if (vowelCount > 0)
@@ -885,7 +893,48 @@ void insertD(const Uint16& data, const bool& isCaps) {
 	hNCC = hBPC;
 }
 
+void inserAOUB(const Uint16& data, const bool& isCaps) {
+	/*MessageBoxA(NULL, "ok", NULL, MB_OK);*/
+	findAndCalculateVowel();
+	//remove W tone
+	for (ii = VSI; ii <= VEI; ii++) {
+		TypingWord[ii] &= ~TONEW_MASK;
+	}
+
+	hCode = vWillProcess;
+	hBPC = 0;
+
+	for (ii = _index - 1; ii >= 0; ii--) {
+		hBPC++;
+		if (CHR(ii) == data) { //reverse unicode char
+			if (TypingWord[ii] & TONE_MASK) {
+				//restore and disable temporary
+				hCode = vRestore;
+				TypingWord[ii] &= ~TONE_MASK;
+				hData[_index - 1 - ii] = TypingWord[ii];
+				//_index = 0;
+				if (data != KEY_O) //case thoòng
+					tempDisableKey = true;
+				break;
+			}
+			else {
+				TypingWord[ii] |= TONE_MASK;
+				if (!IS_KEY_D(data))
+					TypingWord[ii] &= ~TONEW_MASK;
+				hData[_index - 1 - ii] = GET(TypingWord[ii]);
+			}
+			break;
+		}
+		else { //preresent old char
+			hData[_index - 1 - ii] = GET(TypingWord[ii]);
+		}
+	}
+	hNCC = hBPC;
+
+}
+//them dau khi cac dau o a
 void insertAOE(const Uint16& data, const bool& isCaps) {
+
 	findAndCalculateVowel();
 
 	//remove W tone
@@ -1130,7 +1179,7 @@ void handleMainKey(const Uint16& data, const bool& isCaps) {
 		}
 		return;
 	}
-
+	// ???
 	if (data == KEY_LEFT_BRACKET) { //standalone key [
 		checkForStandaloneChar(data, isCaps, KEY_O);
 		return;
@@ -1225,18 +1274,20 @@ void handleMainKey(const Uint16& data, const bool& isCaps) {
 
 	keyForAEO = ((vInputType == vTelex || vInputType == vSimpleTelex) ? data : ((data == KEY_7 || data == KEY_8 ? KEY_W : (data == KEY_6 ? TypingWord[VEI] : data))));
 	vector<vector<Uint16>>& charset = _vowel[keyForAEO];
+	//thang charset quan trong, no se
 	isCorect = false;
 	isChanged = false;
 	k = _index;
+	
 	for (i = 0; i < charset.size(); i++) {
 		if (_index < charset[i].size())
 			continue;
 		isCorect = true;
 		checkCorrectVowel(charset, i, k, data);
-
+		//MessageBoxA(NULL, std::to_string(_index).c_str(), NULL, MB_OK);
 		if (isCorect) {
 			isChanged = true;
-			if (IS_KEY_DOUBLE(data)) {
+			if(IS_KEY_DOUBLE(data)) {
 				insertAOE(keyForAEO, isCaps);
 			}
 			else if (IS_KEY_W(data)) {
@@ -1264,6 +1315,88 @@ void handleMainKey(const Uint16& data, const bool& isCaps) {
 			insertKey(data, isCaps);
 		}
 	}
+}
+
+
+void handleMainKeyGermany(const Uint16& data, const bool& isCaps) {
+	if (IS_KEY_Z(data)) {
+		removeMark();
+		if (!isChanged) {
+			insertKey(data, isCaps);
+		}
+		return;
+	}
+
+	if (data == KEY_LEFT_BRACKET) {
+		checkForStandaloneChar(data, isCaps, KEY_O);
+		return;
+	}
+
+	if (data == KEY_RIGHT_BRACKET) {
+		checkForStandaloneChar(data, isCaps, KEY_U);
+		return;
+	}
+
+	//if is key D
+	if (IS_KEY_D(data)) {
+		isCorect = false;
+		isChanged = false;
+		k = _index;
+		for (i = 0; i < _consonantD.size(); i++) {
+			if (_index < _consonantD[i].size()) {
+				continue;
+			}
+			isCorect = true;
+			checkCorrectVowel(_consonantD, i, k, data);
+
+			//allow d after consonant
+			if (!isChanged && _index - 2 >= 0 && CHR(_index - 1) == KEY_D && IS_CONSONANT(CHR(_index - 2))) {
+				isCorect = true;
+			}
+			if (isCorect) {
+				isChanged = true;
+				insertD(data, isCaps);
+				break;
+			}
+		}
+	}
+	
+	//30/12/2020
+	vector<vector<Uint16>>& charset = _vowelGermany[keyForAEO];
+	isCorect = false;
+	isChanged = false;
+	k = _index;
+	isChanged = true;
+	if (IS_KEY_DOUBLE_GERMANY(data)) {
+
+		inserAOUB(data, isCaps);
+	}
+	//for (i = 0; i < charset.size(); i++) {
+	//	if (_index < charset[i].size())
+	//		//continue;
+	//	isCorect = true;
+	//	MessageBoxA(NULL, std::to_string(_index).c_str(), NULL, MB_OK);
+	//	//tim hieu
+	//	/*checkCorrectVowel(charset, i, k, data);*/
+	//	
+	//	if (isCorect) {
+	//		isChanged = true; 
+	//		if (IS_KEY_DOUBLE_GERMANY(data)) {
+	//			
+	//			inserAOUB(data, isCaps);
+	//		}
+	//	}
+	//}
+
+	if (!isChanged) {
+		if (data == KEY_W && vInputType != vSimpleTelex) {
+			checkForStandaloneChar(data, isCaps, KEY_U);
+		}
+		else {
+			insertKey(data, isCaps);
+		}
+	}
+
 }
 
 void handleQuickTelex(const Uint16& data, const bool& isCaps) {
@@ -1392,6 +1525,7 @@ void vEnglishMode(const vKeyEvent& event,
 	const Uint16& data,
 	const Uint8& capsStatus,
 	const bool& otherControlKey) {
+
 	_isCaps = (capsStatus == 1 || //shift
 		capsStatus == 2); //caps lock
 	if ((IS_NUMBER_KEY(data) && capsStatus == 1)
@@ -1582,7 +1716,6 @@ void vEnglishMode(const vKeyEvent& event,
 				return;
 			}
 			else {
-			
 				hCode = vDoNothing;
 				hBPC = 0;
 				hNCC = 0;
@@ -1593,7 +1726,6 @@ void vEnglishMode(const vKeyEvent& event,
 		else { //check and update key
 			//chua den duoc ham nay
 		 //restore state
-			/*MessageBoxA(NULL, std::to_string(_index).c_str(), NULL, MB_ICONEXCLAMATION | MB_OK);*/
 			hCode = vDoNothing;
 			hExt = 3; //normal key
 			handleMainKey(data, _isCaps);

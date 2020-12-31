@@ -96,6 +96,66 @@ map<Uint16, vector<vector<Uint16>>> _vowel = {
 	}
 };
 
+map<Uint16, vector<vector<Uint16>>> _vowelGermany = {
+	{
+		KEY_A, {
+			{KEY_A, KEY_N, KEY_G}, {KEY_A, KEY_G | END_CONSONANT_MASK},
+			{KEY_A, KEY_N},
+			{KEY_A, KEY_M},
+			{KEY_A, KEY_U},
+			{KEY_A, KEY_Y},
+			{KEY_A, KEY_T},
+			{KEY_A, KEY_P},
+			{KEY_A},
+			{KEY_A, KEY_C},
+		}
+	}, {
+		KEY_O, {
+			{KEY_O, KEY_N, KEY_G}, {KEY_O, KEY_G | END_CONSONANT_MASK},
+			{KEY_O, KEY_N},
+			{KEY_O, KEY_M},
+			{KEY_O, KEY_I},
+			{KEY_O, KEY_C},
+			{KEY_O, KEY_T},
+			{KEY_O, KEY_P},
+			{KEY_O}
+		}
+	}, {
+		KEY_E, {
+			{KEY_E, KEY_N, KEY_H}, {KEY_E, KEY_H | END_CONSONANT_MASK},
+			{KEY_E, KEY_N, KEY_G}, {KEY_E, KEY_G | END_CONSONANT_MASK},
+			{KEY_E, KEY_C, KEY_H}, {KEY_E, KEY_K | END_CONSONANT_MASK},
+			{KEY_E, KEY_C},
+			{KEY_E, KEY_T},
+			{KEY_E, KEY_Y},
+			{KEY_E, KEY_U},
+			{KEY_E, KEY_P},
+			{KEY_E, KEY_C},
+			{KEY_E, KEY_N},
+			{KEY_E, KEY_M},
+			{KEY_E}
+		}
+	},
+	{
+		KEY_B, {
+			{KEY_B, KEY_N, KEY_H}, {KEY_B, KEY_H | END_CONSONANT_MASK},
+			{KEY_B, KEY_N, KEY_G}, {KEY_B, KEY_G | END_CONSONANT_MASK},
+			{KEY_B, KEY_C, KEY_H}, {KEY_B, KEY_K | END_CONSONANT_MASK},
+			{KEY_B, KEY_C},
+			{KEY_B, KEY_T},
+			{KEY_B, KEY_Y},
+			{KEY_B, KEY_U},
+			{KEY_B, KEY_P},
+			{KEY_B, KEY_C},
+			{KEY_B, KEY_N},
+			{KEY_B, KEY_M},
+			{KEY_B}
+		}
+	},
+};
+
+
+
 map<Uint16, vector<vector<Uint32>>> _vowelCombine = {
 	{
 		KEY_A, {

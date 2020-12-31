@@ -129,6 +129,7 @@ struct vKeyHookState {
 #define IS_CONSONANT(keyCode) !(keyCode == KEY_A || keyCode == KEY_E || keyCode == KEY_U || keyCode == KEY_Y || keyCode == KEY_I || keyCode == KEY_O)
 //#define IS_MARK_KEY(keyCode) (keyCode == KEY_S || keyCode == KEY_F || keyCode == KEY_R || keyCode == KEY_J || keyCode == KEY_X)
 #define CHR(index) (Uint16)TypingWord[index]
+
 #define IS_SPECIALKEY(keyCode) \
         (vInputType == vTelex ? \
             keyCode == KEY_W || keyCode == KEY_E || keyCode == KEY_R || keyCode == KEY_O || keyCode == KEY_LEFT_BRACKET || \
@@ -142,7 +143,8 @@ struct vKeyHookState {
             keyCode == KEY_D || keyCode == KEY_F || keyCode == KEY_J ||   keyCode == KEY_Z || keyCode == KEY_X || keyCode == KEY_W : false)))
 
 #define IS_SPECIALKEY_GERMANY(keyCode) \
-        (vInputType == vTelex ? keyCode == KEY_U || keyCode == KEY_O || keyCode == KEY_A \
+        (vInputType == vTelex ? keyCode == KEY_U || keyCode == KEY_O || keyCode == KEY_A || keyCode == KEY_B \
+        || keyCode == KEY_Z || keyCode == KEY_LEFT_BRACKET ||  keyCode == KEY_RIGHT_BRACKET  \
          : (vInputType == vVNI ? keyCode == KEY_U || keyCode == KEY_O || keyCode == KEY_A : false))
 
 
