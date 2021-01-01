@@ -152,6 +152,22 @@ map<Uint16, vector<vector<Uint16>>> _vowelGermany = {
 			{KEY_B}
 		}
 	},
+	{
+		KEY_U, {
+			{KEY_U, KEY_N, KEY_H}, {KEY_U, KEY_H | END_CONSONANT_MASK},
+			{KEY_U, KEY_N, KEY_G}, {KEY_U, KEY_G | END_CONSONANT_MASK},
+			{KEY_U, KEY_C, KEY_H}, {KEY_U, KEY_K | END_CONSONANT_MASK},
+			{KEY_U, KEY_C},
+			{KEY_U, KEY_T},
+			{KEY_U, KEY_Y},
+			{KEY_U, KEY_U},
+			{KEY_U, KEY_P},
+			{KEY_U, KEY_C},
+			{KEY_U, KEY_N},
+			{KEY_U, KEY_M},
+			{KEY_U}
+		}
+	},
 };
 
 
@@ -299,6 +315,80 @@ vector<vector<Uint16>> _consonantD = {
 	{KEY_D, KEY_A, KEY_M},
 
 	{KEY_D}
+};
+
+vector<vector<Uint16>> _consonantB = {
+	{KEY_B, KEY_E, KEY_N, KEY_H}, {KEY_B, KEY_E, KEY_H | END_CONSONANT_MASK},
+	{KEY_B, KEY_E, KEY_N, KEY_G}, {KEY_B, KEY_E, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_E, KEY_C, KEY_H}, {KEY_B, KEY_E, KEY_K | END_CONSONANT_MASK},
+	{KEY_B, KEY_E, KEY_N},
+	{KEY_B, KEY_E, KEY_C},
+	{KEY_B, KEY_E, KEY_M},
+	{KEY_B, KEY_E},
+	{KEY_B, KEY_E, KEY_T},
+	{KEY_B, KEY_E, KEY_U},
+	{KEY_B, KEY_E, KEY_O},
+	{KEY_B, KEY_E, KEY_P},
+
+	{KEY_B, KEY_U, KEY_N, KEY_G}, {KEY_B, KEY_U, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_U, KEY_N},
+	{KEY_B, KEY_U, KEY_M},
+	{KEY_B, KEY_U, KEY_C},
+	{KEY_B, KEY_U, KEY_O},
+	{KEY_B, KEY_U, KEY_A},
+	{KEY_B, KEY_U, KEY_O, KEY_I},
+	{KEY_B, KEY_U, KEY_O, KEY_C},
+	{KEY_B, KEY_U, KEY_O, KEY_N},
+	{KEY_B, KEY_U, KEY_O, KEY_N, KEY_G}, {KEY_B, KEY_U, KEY_O, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_U},
+	{KEY_B, KEY_U, KEY_P},
+	{KEY_B, KEY_U, KEY_T},
+	{KEY_B, KEY_U, KEY_I},
+
+	{KEY_B, KEY_I, KEY_C, KEY_H}, {KEY_B, KEY_I, KEY_K | END_CONSONANT_MASK},
+	{KEY_B, KEY_I, KEY_C},
+	{KEY_B, KEY_I, KEY_N, KEY_H}, {KEY_B, KEY_I, KEY_H | END_CONSONANT_MASK},
+	{KEY_B, KEY_I, KEY_N},
+	{KEY_B, KEY_I},
+	{KEY_B, KEY_I, KEY_A},
+	{KEY_B, KEY_I, KEY_E},
+	{KEY_B, KEY_I, KEY_E, KEY_C},
+	{KEY_B, KEY_I, KEY_E, KEY_U},
+	{KEY_B, KEY_I, KEY_E, KEY_N},
+	{KEY_B, KEY_I, KEY_E, KEY_M},
+	{KEY_B, KEY_I, KEY_E, KEY_P},
+	{KEY_B, KEY_I, KEY_T},
+
+	{KEY_B, KEY_O},
+	{KEY_B, KEY_O, KEY_A},
+	{KEY_B, KEY_O, KEY_A, KEY_N},
+	{KEY_B, KEY_O, KEY_A, KEY_N, KEY_G}, {KEY_B, KEY_O, KEY_A, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_O, KEY_A, KEY_N, KEY_H}, {KEY_B, KEY_O, KEY_A, KEY_H | END_CONSONANT_MASK},
+	{KEY_B, KEY_O, KEY_A, KEY_M},
+	{KEY_B, KEY_O, KEY_E},
+	{KEY_B, KEY_O, KEY_I},
+	{KEY_B, KEY_O, KEY_P},
+	{KEY_B, KEY_O, KEY_C},
+	{KEY_B, KEY_O, KEY_N},
+	{KEY_B, KEY_O, KEY_N, KEY_G}, {KEY_B, KEY_O, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_O, KEY_M},
+	{KEY_B, KEY_O, KEY_T},
+
+	{KEY_B, KEY_A},
+	{KEY_B, KEY_A, KEY_T},
+	{KEY_B, KEY_A, KEY_Y},
+	{KEY_B, KEY_A, KEY_U},
+	{KEY_B, KEY_A, KEY_I},
+	{KEY_B, KEY_A, KEY_O},
+	{KEY_B, KEY_A, KEY_P},
+	{KEY_B, KEY_A, KEY_C},
+	{KEY_B, KEY_A, KEY_C, KEY_H}, {KEY_B, KEY_A, KEY_K | END_CONSONANT_MASK},
+	{KEY_B, KEY_A, KEY_N},
+	{KEY_B, KEY_A, KEY_N, KEY_H}, {KEY_B, KEY_A, KEY_H | END_CONSONANT_MASK},
+	{KEY_B, KEY_A, KEY_N, KEY_G}, {KEY_B, KEY_A, KEY_G | END_CONSONANT_MASK},
+	{KEY_B, KEY_A, KEY_M},
+
+	{KEY_B}
 };
 
 map<Uint16, vector<vector<Uint16>>> _vowelForMark = {
@@ -557,7 +647,7 @@ map<Uint32, vector<Uint16>> _codeTableGermany[] = {
 		{ KEY_O,            {0x00D6, 0x00F6, 0x01A0, 0x01A1, 0x00D3, 0x00F3, 0x00D2, 0x00F2, 0x1ECE, 0x1ECF, 0x00D5, 0x00F5, 0x1ECC, 0x1ECD}},
 		{ KEY_U,            {0x00DC, 0x00FC, 0x01AF, 0x01B0, 0x00DA, 0x00FA, 0x00D9, 0x00F9, 0x1EE6, 0x1EE7, 0x0168, 0x0169, 0x1EE4, 0x1EE5}},
 		{ KEY_E,            {0x00CA, 0x00EA, 0x0000, 0x0000, 0x00C9, 0x00E9, 0x00C8, 0x00E8, 0x1EBA, 0x1EBB, 0x1EBC, 0x1EBD, 0x1EB8, 0x1EB9}},
-		{ KEY_D,            {0x0110, 0x0111}},
+		{ KEY_B,            {0x00DF, 0x00FE}},
 		//Ấ, ấ, Ầ, ầ, Ẩ, ẩ, Ẫ, ẫ, Ậ, ậ ,
 { KEY_A | TONE_MASK,  {0x1EA4, 0x1EA5, 0x1EA6, 0x1EA7, 0x1EA8, 0x1EA9, 0x1EAA, 0x1EAB, 0x1EAC, 0x1EAD}},
 // Ắ, ắ, Ằ, ằ, Ẳ, ẳ, Ẵ, ẵ, Ặ, ặ

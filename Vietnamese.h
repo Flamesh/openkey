@@ -20,7 +20,10 @@ extern map<Uint16, vector<vector<Uint16>>> _vowel;
 extern map<Uint16, vector<vector<Uint16>>> _vowelGermany;
 extern map<Uint16, vector<vector<Uint32>>> _vowelCombine;
 extern map<Uint16, vector<vector<Uint16>>> _vowelForMark;
+
 extern vector<vector<Uint16>> _consonantD;
+extern vector<vector<Uint16>> _consonantB;
+
 extern vector<vector<Uint16>> _consonantTable;
 extern vector<vector<Uint16>> _endConsonantTable;
 extern vector<Uint16> _standaloneWbad;
